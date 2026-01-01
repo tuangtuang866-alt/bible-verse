@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Year Bible Verse Draw</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    button {
+      background: gold;
+      border: none;
+      padding: 15px 25px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+    .verse {
+      margin-top: 30px;
+      font-size: 18px;
+      line-height: 1.6;
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>New Year Bible Verse Draw</h1>
+  <p>Click once and receive Godâ€™s Word for your New Year ðŸ™</p>
+
+  <button id="drawBtn" onclick="drawVerse()">TU KUM AA DING N ALAISIANGTHO</button>
+
+  <div class="verse" id="verseBox"></div>
+
+  <script>
+    const verses = [
+      "Piancil 12:2 â€“ Thupha a ngah dingin minam lian khatin nang hong bawlin...",
+      "Piancil 28:15 â€“ En in, keimah in nang tawh omin na paina peuhah kong kem ding...",
+      "Paikhiatna 14:14 â€“ Topa in note adingin hong dosak ding...",
+      "ThuHilhkikna 31:6 â€“ Thahat un la, hang un, lau kei un...",
+      "Joshua 1:9 â€“ Thu hong pia khin hilo ka hi hiam? Thahat in la hang in...",
+      "Isaiah 43:19 â€“ En un, a thak na khat ka bawl hi...",
+      "Jeremiah 29:11 â€“ Bang hang hiam na cih uh leh Topa in kong cih-inah...",
+      "Psalm 23:1 â€“ Topa in tuu cinâ€™ bang-a kei hong cingpa hi...",
+      "Genesis 12:2 – Thupha a ngah dingin minam lian khatin nang hong bawlin, thupha hong pia-in, na min kong liansak ding a, nang in thupha na hi ding hi.",
+      "Genesis 28:15 – En in, keimah in nang tawh omin na paina peuhah kong kem ding a, hih leitangah nang kong paipih kik ding hi; bang hang hiam cih leh nang’ tunga kong gensa thute ka hih khit matengin nang kong nusia kei ding hi.",
+      "Exodus 14:14 – Topa in note adingin hong dosak ding a, note ahih leh na om hithiat ding uh hi bek hi.",
+      "Deuteronomy 31:6 – Thahat un la, hang un, lau kei un la, amaute kihta kei un: bang hang hiam cih leh note tawh hong paipa in Topa na Pasian uh ahi hi.",
+      "Joshua 1:9 – Thu hong pia khin hilo ka hi hiam? Thahat in la hang in; lau kei in la, lungkia kei in; bang hang hiam cih leh na paina peuhpeuhah Topa na Pasian nang tawh hong om hi.",
+      "Joshua 24:15 – Kei leh ka innkuanpihte in ahih leh Topa’ na ka sem ding uh hi.",
+      "Ruth 2:12 – Topa in na gamtatna sate apha tawh hong thuk a, a lim nuai beel dingin thaman a cingin hong pia ding hi.",
+      "1 Samuel 16:7 – Mihingte in a pua lama kilangte en a, ahih hangin Topa in a lungsim en hi.",
+      "2 Samuel 22:31 – Topa’ kamciamna a manna kilang hi, amah a belte khempeuh adingin amah in kidalna lum ahi hi.",
+      "1 Kings 8:56 – Topa in ama mi Israelte tawlngakna a pia a, ama thuciamna khat zong maimawk lo hi.",
+      "2 Kings 20:5 – Na thungetna ka za khin a, na khituite ka mu khin hi; en in, nang kong damsak ding hi.",
+      "1 Chronicles 16:11 – Topa leh ama hatna zong un la, ama ompihna zong den un!",
+      "2 Chronicles 15:7 – Nang, hang in! Na sepna thaman hong kipia ding ahih manin na khut zawsak kei in.",
+      "Nehemiah 8:10 – Topa sungah lungdamna in note’ thahatna ahi hi.",
+      "Job 8:7 – Na zawn’ mahmah khit hangin a tawpna-ah na hau kik ding hi.",
+      "Job 19:25 – Kei hong pan’pih ding a nungta tawntung mi khat vantungah a omna thu ka thei hi.",
+      "Psalm 1:3 – Amah in luitui luang gei-a kisuan singkung tawh kibang hi; amah sepna khempeuh ah a ma pai hi.",
+      "Psalm 16:11 – Nangmah in nuntakna lampi keimah nong lak hi; nangma omna-ah lungdamna lian om hi.",
+      "Psalm 23:1 – Topa in tuu cin’ bang-a kei hong cingpa hi a, bangmah ka kisam kei ding hi.",
+      "Psalm 27:1 – Topa in ka khuavak leh ka kihotkhiatna hi; bang laupih ding ka hi hiam?",
+      "Psalm 32:8 – Na paina ding lampi lakin kong hilh ding a, ka mit tawh hong en ding hi.",
+      "Psalm 34:8 – Topa’ hoihna sin un la, amah a bel mi in lungdam hi.",
+      "Psalm 37:4 – Topa sungah lungkim in, amah in na lungsim deihna hong pia ding hi.",
+      "Psalm 46:1 – Pasian in eima belh leh thahatna hi, haksat hunin hong huh pahpahpa ahi hi.",
+      "Psalm 46:10 – Om hit-hiat un la, Pasian ka hihna thei un.",
+      "Psalm 55:22 – Topa tungah na vangik nga in, amah in nang hong huh ding hi.",
+      "Psalm 91:2 – Ka bukna leh ka munkip muanhuai, ka Pasian na hi hi.",
+      "Proverbs 3:5 – Na lungsim khempeuh tawh Topa muang in la, nang’ theihna suang kei in.",
+      "Proverbs 3:6 – Na hihna khempeuh ah amah phawk in; tua hi leh lampi maan hong lak ding hi.",
+      "Proverbs 16:3 – Na nasepnate khempeuh ah Topa ap in, tua hi leh na geelna tangtung ding hi.",
+      "Isaiah 26:3 – Nang hong muang a, lungsim kip mipa lungnopna kicing na pia ding hi.",
+      "Isaiah 40:31 – Topa a ngak mite a tha uh dimkik ding a, muvanlai bangin kha tawh leengto ding uh hi.",
+      "Isaiah 41:10 – Nang tawh hong om ka hih manin lau kei in; nang hong hu-in kong honkhia ding hi.",
+      "Isaiah 43:19 – En un, a thak na khat ka bawl hi; tu-in hong piang khia hi.",
+      "Jeremiah 29:11 – Note adingin ka geelna ka thei hi; lametna leh phattuamna ding ahi hi.",
+      "Jeremiah 33:3 – Kei nong sap leh kong dawngkik ding a, thute ki-im cip kong lak ding hi.",
+
+      
+      // ðŸ‘‰ you can keep adding ALL your verses here
+    ];
+
+    const verseBox = document.getElementById("verseBox");
+    const button = document.getElementById("drawBtn");
+
+    // if already drawn
+    if (localStorage.getItem("savedVerse")) {
+      verseBox.innerText = localStorage.getItem("savedVerse");
+      button.disabled = true;
+      button.innerText = "VERSE RECEIVED";
+    }
+
+    function drawVerse() {
+      const randomIndex = Math.floor(Math.random() * verses.length);
+      const verse = verses[randomIndex];
+
+      verseBox.innerText = verse;
+      localStorage.setItem("savedVerse", verse);
+
+      button.disabled = true;
+      button.innerText = "VERSE RECEIVED";
+    }
+  </script>
+
+</body>
+</html>
